@@ -28,7 +28,11 @@
     "url": "https://github.com/lukechilds/create-test-server/issues"
   },
   "homepage": "https://github.com/lukechilds/create-test-server",
-  "dependencies": {},
+  "dependencies": {
+    "express": "^4.15.3",
+    "get-port": "^3.1.0",
+    "pify": "^3.0.0"
+  },
   "devDependencies": {
     "ava": "^0.19.1",
     "coveralls": "^2.13.1",
