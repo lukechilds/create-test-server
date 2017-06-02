@@ -30,3 +30,25 @@ test('express endpoint', async t => {
 	const response = await got(server.url + '/foo');
 	t.is(response.body, 'bar');
 });
+
+test('server can be stopped and restarted', async t => {
+	const server = await createTestServer();
+
+	t.plan(3);
+
+	await got(server.url + '/foo').catch(err => {
+		t.is(err.statusCode, 404);
+	});
+
+	await server.close();
+
+	await got(server.url + '/foo', { timeout: 100 }).catch(err => {
+		t.is(err.code, 'ETIMEDOUT');
+	});
+
+	await server.listen();
+
+	await got(server.url + '/foo').catch(err => {
+		t.is(err.statusCode, 404);
+	});
+});
