@@ -67,7 +67,7 @@ test(async t => {
 });
 ```
 
-You can also make properly authenticated SSL requests by settings a common name for the server certificate and validating against the provided CA certificate:
+You can also make properly authenticated SSL requests by setting a common name for the server certificate and validating against the provided CA certificate:
 
 ```js
 test(async t => {
