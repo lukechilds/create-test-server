@@ -168,6 +168,10 @@ Type: `function`
 
 Returns a Promise that resolves when both the HTTP and HTTPS servers have stopped listening.
 
+## Related
+
+- [`create-cert`](https://github.com/lukechilds/create-cert) - Super simple self signed certificates
+
 ## License
 
 MIT © Luke Childs
