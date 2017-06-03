@@ -6,7 +6,11 @@
 [![Coverage Status](https://coveralls.io/repos/github/lukechilds/create-test-server/badge.svg?branch=master)](https://coveralls.io/github/lukechilds/create-test-server?branch=master)
 [![npm](https://img.shields.io/npm/v/create-test-server.svg)](https://www.npmjs.com/package/create-test-server)
 
-Inspired by the `createServer()` helper function in the [Got tests](https://github.com/sindresorhus/got/blob/1f1b6ffb6da13f483ef7f6bd92dd33f022e7de47/test/helpers/server.js)
+Inspired by the `createServer()` helper function in the [Got tests](https://github.com/sindresorhus/got/blob/1f1b6ffb6da13f483ef7f6bd92dd33f022e7de47/test/helpers/server.js).
+
+A simple interface for creating a preconfigured express instance listening for both HTTP and HTTPS traffic.
+
+A self signed certificate is automatically generated for SSL. An associated CA certificate is also returned for you to validate against.
 
 ## Install
 
