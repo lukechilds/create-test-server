@@ -55,3 +55,14 @@ test('server can be stopped and restarted', async t => {
 		t.is(err.statusCode, 404);
 	});
 });
+
+test('server listens for SSL traffic', async t => {
+	const server = await createTestServer();
+
+	server.get('/foo', (req, res) => {
+		res.send('bar');
+	});
+
+	const response = await got(server.sslUrl + '/foo', { rejectUnauthorized: false });
+	t.is(response.body, 'bar');
+});
