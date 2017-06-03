@@ -66,3 +66,20 @@ test('server listens for SSL traffic', async t => {
 	const response = await got(server.sslUrl + '/foo', { rejectUnauthorized: false });
 	t.is(response.body, 'bar');
 });
+
+test('opts.certificate is passed through to createCert()', async t => {
+	const server = await createTestServer({ certificate: 'foo.bar' });
+
+	server.get('/foo', (req, res) => {
+		res.send('bar');
+	});
+
+	console.log(server.sslCert);
+
+	const response = await got(server.sslUrl + '/foo', {
+		strictSSL: true,
+		ca: server.sslCert.caKeys.certificate,
+		headers: { host: 'foo.bar' }
+	});
+	t.is(response.body, 'bar');
+});
