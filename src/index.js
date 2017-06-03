@@ -22,10 +22,7 @@ const createTestServer = opts => Promise.all([
 		app.sslUrl = `https://${app.host}:${app.sslPort}`;
 
 		const server = http.createServer(app);
-		const sslServer = https.createServer({
-			key: app.sslCert.keys.clientKey,
-			cert: app.sslCert.keys.certificate
-		}, app);
+		const sslServer = https.createServer(app.sslCert.keys, app);
 
 		app.listen = () => Promise.all([
 			pify(server.listen.bind(server))(app.port),
