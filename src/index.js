@@ -13,16 +13,17 @@ const createTestServer = opts => Promise.all([
 	createCert(opts && opts.certificate)
 ])
 	.then(results => {
+		const cert = results[2];
 		const app = express();
 		app.port = results[0];
 		app.sslPort = results[1];
-		app.sslCert = results[2];
+		app.caCert = cert.caKeys.cert;
 		app.host = 'localhost';
 		app.url = `http://${app.host}:${app.port}`;
 		app.sslUrl = `https://${app.host}:${app.sslPort}`;
 
 		const server = http.createServer(app);
-		const sslServer = https.createServer(app.sslCert.keys, app);
+		const sslServer = https.createServer(cert.keys, app);
 
 		app.listen = () => Promise.all([
 			pify(server.listen.bind(server))(app.port),

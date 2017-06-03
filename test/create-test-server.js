@@ -18,7 +18,7 @@ test('server instance exposes useful properties', async t => {
 	t.true(typeof server.sslPort === 'number');
 	t.is(server.url, `http://${server.host}:${server.port}`);
 	t.is(server.sslUrl, `https://${server.host}:${server.sslPort}`);
-	t.true(typeof server.sslCert === 'object');
+	t.true(typeof server.caCert === 'string');
 	t.true(typeof server.listen === 'function');
 	t.true(typeof server.close === 'function');
 });
@@ -78,7 +78,7 @@ test('opts.certificate is passed through to createCert()', async t => {
 
 	const { body } = await got(server.sslUrl + '/foo', {
 		strictSSL: true,
-		ca: server.sslCert.caKeys.cert,
+		ca: server.caCert,
 		headers: { host: 'foo.bar' }
 	});
 	t.is(body, 'bar');
