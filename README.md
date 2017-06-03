@@ -72,7 +72,6 @@ You can also make properly authenticated SSL requests by validating against the 
 ```js
 test(async t => {
   const server = await createTestServer({ certificate: 'foobar.com' });
-
   server.get('/foo', (req, res) => res.send('bar'));
 
   const response = await got(server.sslUrl + '/foo', {
