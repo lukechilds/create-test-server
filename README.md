@@ -18,6 +18,62 @@ A self signed certificate is automatically generated for SSL. An associated CA c
 npm install --save-dev create-test-server
 ```
 
+## Usage
+
+`createTestServer()` has a Promise based API that pairs well with a modern asynchronous test runner such as [AVA](https://github.com/avajs/ava).
+
+You can create a separate server per test:
+
+```js
+import test from 'ava';
+import got from 'got';
+import createTestServer from 'create-test-server';
+
+test(async t => {
+  const server = await createTestServer();
+
+  console.log(server.url);
+  // http://localhost:5486
+  console.log(server.sslUrl);
+  // https://localhost:5487
+
+  server.get('/foo', (req, res) => {
+    res.send('bar');
+  });
+
+  const response = await got(server.url + '/foo');
+  t.is(response.body, 'bar');
+});
+```
+
+Or share a server across multiple tests:
+
+```js
+import test from 'ava';
+import got from 'got';
+import createTestServer from 'create-test-server';
+
+let server;
+
+test.before(async () => {
+  server = await createTestServer();
+
+  server.get('/foo', (req, res) => {
+    res.send('bar');
+  });
+});
+
+test(async t => {
+  const response = await got(server.url + '/foo');
+  t.is(response.body, 'bar');
+});
+
+test(async t => {
+  const response = await got(server.url + '/foo');
+  t.is(response.statusCode, 200);
+});
+```
+
 ## License
 
 MIT © Luke Childs
