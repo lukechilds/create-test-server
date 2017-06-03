@@ -30,18 +30,21 @@ test('express endpoint', async t => {
 		res.send('bar');
 	});
 
-	const response = await got(server.url + '/foo');
-	t.is(response.body, 'bar');
+	const { body } = await got(server.url + '/foo');
+	t.is(body, 'bar');
 });
 
 test('server can be stopped and restarted', async t => {
 	const server = await createTestServer();
 
+	server.get('/foo', (req, res) => {
+		res.send('bar');
+	});
+
 	t.plan(3);
 
-	await got(server.url + '/foo').catch(err => {
-		t.is(err.statusCode, 404);
-	});
+	const { body } = await got(server.url + '/foo');
+	t.is(body, 'bar');
 
 	await server.close();
 
@@ -51,9 +54,8 @@ test('server can be stopped and restarted', async t => {
 
 	await server.listen();
 
-	await got(server.url + '/foo').catch(err => {
-		t.is(err.statusCode, 404);
-	});
+	const { body: bodyRestarted } = await got(server.url + '/foo');
+	t.is(bodyRestarted, 'bar');
 });
 
 test('server listens for SSL traffic', async t => {
@@ -63,8 +65,8 @@ test('server listens for SSL traffic', async t => {
 		res.send('bar');
 	});
 
-	const response = await got(server.sslUrl + '/foo', { rejectUnauthorized: false });
-	t.is(response.body, 'bar');
+	const { body } = await got(server.sslUrl + '/foo', { rejectUnauthorized: false });
+	t.is(body, 'bar');
 });
 
 test('opts.certificate is passed through to createCert()', async t => {
@@ -74,10 +76,10 @@ test('opts.certificate is passed through to createCert()', async t => {
 		res.send('bar');
 	});
 
-	const response = await got(server.sslUrl + '/foo', {
+	const { body } = await got(server.sslUrl + '/foo', {
 		strictSSL: true,
 		ca: server.sslCert.caKeys.cert,
 		headers: { host: 'foo.bar' }
 	});
-	t.is(response.body, 'bar');
+	t.is(body, 'bar');
 });
