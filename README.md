@@ -160,7 +160,7 @@ Type: `function`
 
 Returns a Promise that resolves when both the HTTP and HTTPS servers are listening.
 
-Please note, this function doesn't take a port argument. It uses the predetermined port from `server.url` and `server.sslUrl`.
+Please note, this function doesn't take a port argument, it uses the predetermined port from `server.url` and `server.sslUrl`. Also, you don't need to manually call this after creating a server, it will listen automatically.
 
 #### server.close()
 
