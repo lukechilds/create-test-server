@@ -13,11 +13,8 @@ test('createTestServer returns a Promise', t => {
 test('server instance exposes useful properties', async t => {
 	const server = await createTestServer();
 
-	t.is(server.host, 'localhost');
-	t.true(typeof server.port === 'number');
-	t.true(typeof server.sslPort === 'number');
-	t.is(server.url, `http://${server.host}:${server.port}`);
-	t.is(server.sslUrl, `https://${server.host}:${server.sslPort}`);
+	t.true(typeof server.url === 'string');
+	t.true(typeof server.sslUrl === 'string');
 	t.true(typeof server.caCert === 'string');
 	t.true(typeof server.listen === 'function');
 	t.true(typeof server.close === 'function');
