@@ -109,6 +109,65 @@ await server.listen();
 // server.url and server.sslUrl are listening
 ```
 
+## API
+
+### createTestServer([options])
+
+Returns a Promise which resolves to an express instance.
+
+#### options
+
+Type: `object`
+
+##### options.certificate
+
+Type: `string`, `object`<br>
+Default: `undefined`
+
+SSL certificate options to be passed to [`createCert()`](https://github.com/lukechilds/create-cert).
+
+### server
+
+express instance resolved from `createTestServer()`
+
+This is just a normal express instance with a few extra properties.
+
+#### server.url
+
+Type: `string`
+
+The url you can reach the HTTP server on.
+
+e.g: `'http://localhost:5486'`
+
+#### server.sslUrl
+
+Type: `string`
+
+The url you can reach the HTTPS server on.
+
+e.g: `'https://localhost:5487'`
+
+#### server.caCert
+
+Type: `string`
+
+The CA certificate to validate the server certificate against.
+
+#### server.listen()
+
+Type: `function`
+
+Returns a Promise that resolves when both the HTTP and HTTPS servers are listening.
+
+Please note, this function doesn't take a port argument. It uses the predetermined port from `server.url` and `server.sslUrl`.
+
+#### server.close()
+
+Type: `function`
+
+Returns a Promise that resolves when both the HTTP and HTTPS servers have stopped listening.
+
 ## License
 
 MIT © Luke Childs
