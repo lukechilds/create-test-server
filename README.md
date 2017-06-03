@@ -83,6 +83,20 @@ test(async t => {
 });
 ```
 
+You can still make an SSL connection without messing about with certificates if your client supports unauthorised SSL requests:
+
+```js
+test(async t => {
+  const server = await createTestServer();
+  server.get('/foo', (req, res) => res.send('bar'));
+
+  const response = await got(server.sslUrl + '/foo', {
+    rejectUnauthorized: false
+  });
+  t.is(response.body, 'bar');
+});
+```
+
 ## License
 
 MIT © Luke Childs
