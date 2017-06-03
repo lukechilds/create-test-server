@@ -97,6 +97,19 @@ test(async t => {
 });
 ```
 
+You can also easily stop/restart the server:
+
+```js
+const server = await createTestServer();
+// server.url and server.sslUrl are listening
+
+await server.close();
+// server.url and server.sslUrl are closed
+
+await server.listen();
+// server.url and server.sslUrl are listening
+```
+
 ## License
 
 MIT © Luke Childs
