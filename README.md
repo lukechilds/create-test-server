@@ -74,6 +74,29 @@ test(async t => {
 });
 ```
 
+You can also make properly authenticated SSL requests by validating against the provided CA certificate:
+
+```js
+import test from 'ava';
+import got from 'got';
+import createTestServer from 'create-test-server';
+
+test(async t => {
+  const server = await createTestServer({ certificate: 'foobar.com' });
+
+  server.get('/foo', (req, res) => {
+    res.send('bar');
+  });
+
+  const response = await got(server.sslUrl + '/foo', {
+    strictSSL: true,
+    ca: server.caCert,
+    headers: { host: 'foobar.com' }
+  });
+  t.is(response.body, 'bar');
+});
+```
+
 ## License
 
 MIT © Luke Childs
