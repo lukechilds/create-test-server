@@ -75,7 +75,6 @@ test(async t => {
   server.get('/foo', (req, res) => res.send('bar'));
 
   const response = await got(server.sslUrl + '/foo', {
-    strictSSL: true,
     ca: server.caCert,
     headers: { host: 'foobar.com' }
   });
