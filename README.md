@@ -37,6 +37,8 @@ test(async t => {
   console.log(server.sslUrl);
   // https://localhost:5487
 
+  // This is just an express route
+  // You could use any express middleware too
   server.get('/foo', (req, res) => res.send('bar'));
 
   const response = await got(server.url + '/foo');
