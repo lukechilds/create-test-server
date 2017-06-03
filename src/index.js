@@ -1,21 +1,42 @@
 'use strict';
 
 const http = require('http');
+const https = require('https');
 const express = require('express');
 const getPort = require('get-port');
 const pify = require('pify');
+const createCert = require('create-cert');
 
-const createTestServer = () => getPort().then(port => {
-	const app = express();
-	const server = http.createServer(app);
+const createTestServer = () => Promise.all([
+	getPort(),
+	getPort(),
+	createCert()
+])
+	.then(results => {
+		const app = express();
+		app.port = results[0];
+		app.sslPort = results[1];
+		app.sslCert = results[2];
+		app.host = 'localhost';
+		app.url = `http://${app.host}:${app.port}`;
+		app.sslUrl = `https://${app.host}:${app.sslPort}`;
 
-	app.host = 'localhost';
-	app.port = port;
-	app.url = `http://${app.host}:${app.port}`;
-	app.listen = pify(server.listen.bind(server, app.port));
-	app.close = pify(server.close.bind(server));
+		const server = http.createServer(app);
+		const sslServer = https.createServer({
+			key: app.sslCert.keys.clientKey,
+			cert: app.sslCert.keys.certificate
+		}, app);
 
-	return app.listen().then(() => app);
-});
+		app.listen = () => Promise.all([
+			pify(server.listen.bind(server))(app.port),
+			pify(sslServer.listen.bind(sslServer))(app.sslPort)
+		]);
+		app.close = () => Promise.all([
+			pify(server.close.bind(server))(),
+			pify(sslServer.close.bind(sslServer))()
+		]);
+
+		return app.listen().then(() => app);
+	});
 
 module.exports = createTestServer;

@@ -29,6 +29,7 @@
   },
   "homepage": "https://github.com/lukechilds/create-test-server",
   "dependencies": {
+    "create-cert": "^0.1.1",
     "express": "^4.15.3",
     "get-port": "^3.1.0",
     "pify": "^3.0.0"
