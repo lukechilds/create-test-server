@@ -10,7 +10,7 @@ Inspired by the `createServer()` helper function in the [Got tests](https://gith
 
 A simple interface for creating a preconfigured express instance listening for both HTTP and HTTPS traffic.
 
-A self signed certificate is automatically generated for SSL. An associated CA certificate is also returned for you to validate against.
+Ports are chosen at random for HTTP/HTTPS. A self signed certificate is automatically generated, along with an associated CA certificate for you to validate against.
 
 ## Install
 
