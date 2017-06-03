@@ -37,9 +37,7 @@ test(async t => {
   console.log(server.sslUrl);
   // https://localhost:5487
 
-  server.get('/foo', (req, res) => {
-    res.send('bar');
-  });
+  server.get('/foo', (req, res) => res.send('bar'));
 
   const response = await got(server.url + '/foo');
   t.is(response.body, 'bar');
@@ -53,10 +51,7 @@ let server;
 
 test.before(async () => {
   server = await createTestServer();
-
-  server.get('/foo', (req, res) => {
-    res.send('bar');
-  });
+  server.get('/foo', (req, res) => res.send('bar'));
 });
 
 test(async t => {
@@ -76,9 +71,7 @@ You can also make properly authenticated SSL requests by validating against the 
 test(async t => {
   const server = await createTestServer({ certificate: 'foobar.com' });
 
-  server.get('/foo', (req, res) => {
-    res.send('bar');
-  });
+  server.get('/foo', (req, res) => res.send('bar'));
 
   const response = await got(server.sslUrl + '/foo', {
     strictSSL: true,
