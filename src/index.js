@@ -7,10 +7,10 @@ const getPort = require('get-port');
 const pify = require('pify');
 const createCert = require('create-cert');
 
-const createTestServer = () => Promise.all([
+const createTestServer = opts => Promise.all([
 	getPort(),
 	getPort(),
-	createCert()
+	createCert(opts && opts.certificate)
 ])
 	.then(results => {
 		const app = express();
