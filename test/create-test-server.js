@@ -15,8 +15,6 @@ test('server instance exposes useful properties', async t => {
 
 	t.true(typeof server.url === 'string');
 	t.true(typeof server.sslUrl === 'string');
-	t.true(typeof server.port === 'number');
-	t.true(typeof server.sslPort === 'number');
 	t.true(typeof server.caCert === 'string');
 	t.true(typeof server.listen === 'function');
 	t.true(typeof server.close === 'function');
