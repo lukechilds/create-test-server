@@ -3,7 +3,6 @@
 const http = require('http');
 const https = require('https');
 const express = require('express');
-const getPort = require('get-port');
 const pify = require('pify');
 const createCert = require('create-cert');
 
@@ -16,12 +15,12 @@ const createTestServer = opts => createCert(opts && opts.certificate)
 		app.caCert = cert.caKeys.cert;
 
 		app.listen = () => Promise.all([
-			getPort().then(port => pify(server.listen.bind(server))(port).then(() => {
-				app.url = `http://localhost:${port}`;
-			})),
-			getPort().then(sslPort => pify(sslServer.listen.bind(sslServer))(sslPort).then(() => {
-				app.sslUrl = `https://localhost:${sslPort}`;
-			}))
+			pify(server.listen.bind(server))().then(() => {
+				app.url = `http://localhost:${server.address().port}`;
+			}),
+			pify(sslServer.listen.bind(sslServer))().then(() => {
+				app.sslUrl = `https://localhost:${sslServer.address().port}`;
+			})
 		]);
 
 		app.close = () => Promise.all([
