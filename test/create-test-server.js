@@ -43,9 +43,10 @@ test('server can be stopped and restarted', async t => {
 	const { body } = await got(server.url + '/foo');
 	t.is(body, 'bar');
 
+	const closedUrl = server.url;
 	await server.close();
 
-	await got(server.url + '/foo', { timeout: 100 }).catch(err => {
+	await got(closedUrl + '/foo', { timeout: 100 }).catch(err => {
 		t.is(err.code, 'ETIMEDOUT');
 	});
 
