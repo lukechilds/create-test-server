@@ -20,6 +20,25 @@ npm install --save-dev create-test-server
 
 ## Usage
 
+```js
+const createTestServer = require('create-test-server');
+
+createTestServer().then(server => {
+  console.log(server.url);
+  // http://localhost:5486
+  console.log(server.sslUrl);
+  // https://localhost:5487
+
+  // This is just an express route
+  // You could use any express middleware too
+  server.get('/foo', (req, res) => {
+    res.send('bar');
+  });
+
+  // server.url + '/foo' and server.sslUrl + '/foo' will respond with 'bar'
+});
+```
+
 `createTestServer()` has a Promise based API that pairs well with a modern asynchronous test runner such as [AVA](https://github.com/avajs/ava).
 
 You can create a separate server per test:
@@ -31,14 +50,6 @@ import createTestServer from 'create-test-server';
 
 test(async t => {
   const server = await createTestServer();
-
-  console.log(server.url);
-  // http://localhost:5486
-  console.log(server.sslUrl);
-  // https://localhost:5487
-
-  // This is just an express route
-  // You could use any express middleware too
   server.get('/foo', (req, res) => res.send('bar'));
 
   const response = await got(server.url + '/foo');
