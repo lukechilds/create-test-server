@@ -116,7 +116,7 @@ console.log(server.url);
 
 ### createTestServer([options])
 
-Returns a Promise which resolves to an express instance.
+Returns a Promise which resolves to an (already listening) server.
 
 #### options
 
