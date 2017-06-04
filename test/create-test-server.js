@@ -56,6 +56,15 @@ test('server can be stopped and restarted', async t => {
 	t.is(bodyRestarted, 'bar');
 });
 
+test('server uses a new port on each listen', async t => {
+	const server = await createTestServer();
+	const origurl = server.url;
+	await server.close();
+	await server.listen();
+
+	t.not(origurl, server.url);
+});
+
 test('server listens for SSL traffic', async t => {
 	const server = await createTestServer();
 
