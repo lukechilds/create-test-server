@@ -132,26 +132,6 @@ express instance resolved from `createTestServer()`
 
 This is just a normal express instance with a few extra properties.
 
-#### server.port
-
-Type: `number`, `undefined`
-
-The port the HTTP server is listening on.
-
-e.g: `5486`
-
-`undefined` while the server is not listening.
-
-#### server.sslPort
-
-Type: `number`, `undefined`
-
-The port the HTTPS server is listening on.
-
-e.g: `5487`
-
-`undefined` while the server is not listening.
-
 #### server.url
 
 Type: `string`, `undefined`
@@ -184,6 +164,8 @@ Type: `function`
 
 Returns a Promise that resolves when both the HTTP and HTTPS servers are listening.
 
+Once the servers are listening, `server.url` and `server.sslUrl` will be updated.
+
 Please note, this function doesn't take a port argument, it uses a new randomised port each time. Also, you don't need to manually call this after creating a server, it will start listening automatically.
 
 #### server.close()
@@ -191,6 +173,8 @@ Please note, this function doesn't take a port argument, it uses a new randomise
 Type: `function`
 
 Returns a Promise that resolves when both the HTTP and HTTPS servers have stopped listening.
+
+Once the servers have stopped listening, `server.url` and `server.sslUrl` will be set to `undefined`.
 
 ## Related
 
