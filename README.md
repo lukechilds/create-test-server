@@ -96,17 +96,20 @@ test(async t => {
 });
 ```
 
-You can also easily stop/restart the server:
+You can also easily stop/restart the server. Notice how a new port is used when we listen again:
 
 ```js
 const server = await createTestServer();
-// server.url and server.sslUrl are listening
+console.log(server.url);
+// 'http://localhost:56711'
 
 await server.close();
-// server.url and server.sslUrl are closed
+console.log(server.url);
+// undefined
 
 await server.listen();
-// server.url and server.sslUrl are listening
+console.log(server.url);
+// 'http://localhost:56804'
 ```
 
 ## API
