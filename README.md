@@ -132,21 +132,45 @@ express instance resolved from `createTestServer()`
 
 This is just a normal express instance with a few extra properties.
 
+#### server.port
+
+Type: `number`, `undefined`
+
+The port the HTTP server is listening on.
+
+e.g: `5486`
+
+`undefined` while the server is not listening.
+
+#### server.sslPort
+
+Type: `number`, `undefined`
+
+The port the HTTPS server is listening on.
+
+e.g: `5487`
+
+`undefined` while the server is not listening.
+
 #### server.url
 
-Type: `string`
+Type: `string`, `undefined`
 
 The url you can reach the HTTP server on.
 
 e.g: `'http://localhost:5486'`
 
+`undefined` while the server is not listening.
+
 #### server.sslUrl
 
-Type: `string`
+Type: `string`, `undefined`
 
 The url you can reach the HTTPS server on.
 
 e.g: `'https://localhost:5487'`
+
+`undefined` while the server is not listening.
 
 #### server.caCert
 
@@ -160,7 +184,7 @@ Type: `function`
 
 Returns a Promise that resolves when both the HTTP and HTTPS servers are listening.
 
-Please note, this function doesn't take a port argument, it uses the predetermined port from `server.url` and `server.sslUrl`. Also, you don't need to manually call this after creating a server, it will listen automatically.
+Please note, this function doesn't take a port argument, it uses a new randomised port each time. Also, you don't need to manually call this after creating a server, it will start listening automatically.
 
 #### server.close()
 
