@@ -52,7 +52,7 @@ test(async t => {
   const server = await createTestServer();
   server.get('/foo', (req, res) => res.send('bar'));
 
-  const response = await got(server.url + '/foo');
+  const response = await got(`${server.url}/foo`);
   t.is(response.body, 'bar');
 });
 ```
@@ -68,12 +68,12 @@ test.before(async () => {
 });
 
 test(async t => {
-  const response = await got(server.url + '/foo');
+  const response = await got(`${server.url}/foo`);
   t.is(response.body, 'bar');
 });
 
 test(async t => {
-  const response = await got(server.url + '/foo');
+  const response = await got(`${server.url}/foo`);
   t.is(response.statusCode, 200);
 });
 ```
@@ -85,7 +85,7 @@ test(async t => {
   const server = await createTestServer({ certificate: 'foobar.com' });
   server.get('/foo', (req, res) => res.send('bar'));
 
-  const response = await got(server.sslUrl + '/foo', {
+  const response = await got(`${server.sslUrl}/foo`, {
     ca: server.caCert,
     headers: { host: 'foobar.com' }
   });
@@ -100,7 +100,7 @@ test(async t => {
   const server = await createTestServer();
   server.get('/foo', (req, res) => res.send('bar'));
 
-  const response = await got(server.sslUrl + '/foo', {
+  const response = await got(`${server.sslUrl}/foo`, {
     rejectUnauthorized: false
   });
   t.is(response.body, 'bar');
