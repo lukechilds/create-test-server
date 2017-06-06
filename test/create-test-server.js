@@ -84,7 +84,6 @@ test('opts.certificate is passed through to createCert()', async t => {
 	});
 
 	const { body } = await got(server.sslUrl + '/foo', {
-		strictSSL: true,
 		ca: server.caCert,
 		headers: { host: 'foo.bar' }
 	});
