@@ -7,12 +7,12 @@ const pify = require('pify');
 const createCert = require('create-cert');
 
 const createTestServer = opts => createCert(opts && opts.certificate)
-	.then(cert => {
+	.then(keys => {
 		const app = express();
 		const server = http.createServer(app);
-		const sslServer = https.createServer(cert.keys, app);
+		const sslServer = https.createServer(keys, app);
 
-		app.caCert = cert.caKeys.cert;
+		app.caCert = keys.caCert;
 
 		app.listen = () => Promise.all([
 			pify(server.listen.bind(server))().then(() => {
