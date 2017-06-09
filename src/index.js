@@ -12,6 +12,8 @@ const createTestServer = opts => createCert(opts && opts.certificate)
 		const server = http.createServer(app);
 		const sslServer = https.createServer(keys, app);
 
+		app.set('etag', false);
+
 		app.caCert = keys.caCert;
 
 		app.listen = () => Promise.all([
