@@ -54,6 +54,8 @@ test(async t => {
 
   const response = await got(`${server.url}/foo`);
   t.is(response.body, 'bar');
+
+  await server.close();
 });
 ```
 
@@ -76,6 +78,10 @@ test(async t => {
   const response = await got(`${server.url}/foo`);
   t.is(response.statusCode, 200);
 });
+
+test.after(async () => {
+	await server.close();
+});
 ```
 
 You can also make properly authenticated SSL requests by setting a common name for the server certificate and validating against the provided CA certificate:
@@ -90,6 +96,8 @@ test(async t => {
     headers: { host: 'foobar.com' }
   });
   t.is(response.body, 'bar');
+
+  await server.close();
 });
 ```
 
@@ -104,6 +112,8 @@ test(async t => {
     rejectUnauthorized: false
   });
   t.is(response.body, 'bar');
+
+  await server.close();
 });
 ```
 
@@ -170,7 +180,7 @@ e.g: `'https://localhost:5487'`
 
 Type: `string`
 
-The CA certificate to validate the server certificate against.
+The CA certificate to validate the server certificate against.˜
 
 #### server.listen()
 
