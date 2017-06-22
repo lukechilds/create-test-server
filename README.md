@@ -1,5 +1,7 @@
 # create-test-server
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/lukechilds/create-test-server.svg)](https://greenkeeper.io/)
+
 > Creates a minimal express server for testing
 
 [![Build Status](https://travis-ci.org/lukechilds/create-test-server.svg?branch=master)](https://travis-ci.org/lukechilds/create-test-server)
