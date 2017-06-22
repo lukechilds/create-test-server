@@ -1,5 +1,8 @@
 ## Node
 
+# Don't commit package-lock.json
+package-lock.json
+
 # Logs
 logs
 *.log
