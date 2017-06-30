@@ -1,6 +1,6 @@
 # create-test-server
 
-> Creates a minimal express server for testing
+> Creates a minimal Express server for testing
 
 [![Build Status](https://travis-ci.org/lukechilds/create-test-server.svg?branch=master)](https://travis-ci.org/lukechilds/create-test-server)
 [![Coverage Status](https://coveralls.io/repos/github/lukechilds/create-test-server/badge.svg?branch=master)](https://coveralls.io/github/lukechilds/create-test-server?branch=master)
@@ -8,7 +8,7 @@
 
 Inspired by the `createServer()` helper function in the [Got tests](https://github.com/sindresorhus/got/blob/1f1b6ffb6da13f483ef7f6bd92dd33f022e7de47/test/helpers/server.js).
 
-A simple interface for creating a preconfigured express instance listening for both HTTP and HTTPS traffic.
+A simple interface for creating a preconfigured Express instance listening for both HTTP and HTTPS traffic.
 
 Ports are chosen at random for HTTP/HTTPS. A self signed certificate is automatically generated, along with an associated CA certificate for you to validate against.
 
@@ -29,8 +29,8 @@ createTestServer().then(server => {
   console.log(server.sslUrl);
   // https://localhost:5487
 
-  // This is just an express route
-  // You could use any express middleware too
+  // This is just an Express route
+  // You could use any Express middleware too
   server.get('/foo', (req, res) => {
     res.send('bar');
   });
@@ -152,9 +152,9 @@ SSL certificate options to be passed to [`createCert()`](https://github.com/luke
 
 ### server
 
-express instance resolved from `createTestServer()`
+Express instance resolved from `createTestServer()`
 
-This is just a normal express instance with a few extra properties.
+This is just a normal Express instance with a few extra properties.
 
 #### server.url
 

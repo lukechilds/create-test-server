@@ -1,7 +1,7 @@
 {
   "name": "create-test-server",
   "version": "2.0.1",
-  "description": "Creates a minimal express server for testing",
+  "description": "Creates a minimal Express server for testing",
   "main": "src/index.js",
   "scripts": {
     "test": "xo && nyc ava",
