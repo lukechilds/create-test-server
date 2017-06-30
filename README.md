@@ -12,6 +12,8 @@ A simple interface for creating a preconfigured Express instance listening for b
 
 Ports are chosen at random for HTTP/HTTPS. A self signed certificate is automatically generated, along with an associated CA certificate for you to validate against.
 
+Created because mocking is dirty and can break between Node.js releases. Why mock HTTP requests when you can test locally against a real server in a few lines code?
+
 ## Install
 
 ```shell
