@@ -18,18 +18,22 @@ const createTestServer = opts => createCert(opts && opts.certificate)
 
 		app.listen = () => Promise.all([
 			pify(server.listen.bind(server))().then(() => {
-				app.url = `http://localhost:${server.address().port}`;
+				app.port = server.address().port;
+				app.url = `http://localhost:${app.port}`;
 			}),
 			pify(sslServer.listen.bind(sslServer))().then(() => {
-				app.sslUrl = `https://localhost:${sslServer.address().port}`;
+				app.sslPort = sslServer.address().port;
+				app.sslUrl = `https://localhost:${app.sslPort}`;
 			})
 		]);
 
 		app.close = () => Promise.all([
 			pify(server.close.bind(server))().then(() => {
+				app.port = undefined;
 				app.url = undefined;
 			}),
 			pify(sslServer.close.bind(sslServer))().then(() => {
+				app.sslPort = undefined;
 				app.sslUrl = undefined;
 			})
 		]);
