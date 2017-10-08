@@ -13,6 +13,8 @@ test('createTestServer returns a Promise', t => {
 test('server instance exposes useful properties', async t => {
 	const server = await createTestServer();
 
+	t.true(typeof server.port === 'number');
+	t.true(typeof server.sslPort === 'number');
 	t.true(typeof server.url === 'string');
 	t.true(typeof server.sslUrl === 'string');
 	t.true(typeof server.caCert === 'string');
@@ -58,11 +60,11 @@ test('server can be stopped and restarted', async t => {
 
 test('server uses a new port on each listen', async t => {
 	const server = await createTestServer();
-	const origurl = server.url;
+	const origPort = server.port;
 	await server.close();
 	await server.listen();
 
-	t.not(origurl, server.url);
+	t.not(origPort, server.port);
 });
 
 test('server listens for SSL traffic', async t => {
