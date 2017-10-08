@@ -124,16 +124,16 @@ You can also easily stop/restart the server. Notice how a new port is used when 
 
 ```js
 const server = await createTestServer();
-console.log(server.url);
-// 'http://localhost:56711'
+console.log(server.port);
+// 56711
 
 await server.close();
-console.log(server.url);
+console.log(server.port);
 // undefined
 
 await server.listen();
-console.log(server.url);
-// 'http://localhost:56804'
+console.log(server.port);
+// 56804
 ```
 
 ## API
@@ -169,6 +169,16 @@ e.g: `'http://localhost:5486'`
 
 `undefined` while the server is not listening.
 
+#### server.port
+
+Type: `number`, `undefined`
+
+The port number you can reach the HTTP server on.
+
+e.g: `5486`
+
+`undefined` while the server is not listening.
+
 #### server.sslUrl
 
 Type: `string`, `undefined`
@@ -176,6 +186,16 @@ Type: `string`, `undefined`
 The url you can reach the HTTPS server on.
 
 e.g: `'https://localhost:5487'`
+
+`undefined` while the server is not listening.
+
+#### server.sslPort
+
+Type: `number`, `undefined`
+
+The port number you can reach the HTTPS server on.
+
+e.g: `5487`
 
 `undefined` while the server is not listening.
 
