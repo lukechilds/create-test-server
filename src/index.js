@@ -13,7 +13,9 @@ const createTestServer = opts => createCert(opts && opts.certificate)
 		const server = http.createServer(app);
 		const sslServer = https.createServer(keys, app);
 		const send = fn => (req, res) => {
-			new Promise(resolve => resolve(fn(req, res))).then(val => {
+			const cb = typeof fn === 'function' ? fn(req, res) : fn;
+
+			new Promise(resolve => resolve(cb)).then(val => {
 				if (val) {
 					res.send(val);
 				}

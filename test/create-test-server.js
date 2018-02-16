@@ -106,3 +106,18 @@ test('support returning body directly', async t => {
 	t.deepEqual(bodyJson, { foo: 'bar' });
 	t.deepEqual(bodyAsync, 'bar');
 });
+
+test('support returning body directly without wrapping in function', async t => {
+	const server = await createTestServer();
+
+	server.get('/foo', 'bar');
+	server.get('/bar', ({ foo: 'bar' }));
+	server.get('/async', Promise.resolve('bar'));
+
+	const bodyString = (await got(server.url + '/foo')).body;
+	const bodyJson = (await got(server.url + '/bar', { json: true })).body;
+	const bodyAsync = (await got(server.url + '/async')).body;
+	t.deepEqual(bodyString, 'bar');
+	t.deepEqual(bodyJson, { foo: 'bar' });
+	t.deepEqual(bodyAsync, 'bar');
+});
