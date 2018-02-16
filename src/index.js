@@ -9,8 +9,16 @@ const createCert = require('create-cert');
 const createTestServer = opts => createCert(opts && opts.certificate)
 	.then(keys => {
 		const app = express();
+		const get = app.get.bind(app);
 		const server = http.createServer(app);
 		const sslServer = https.createServer(keys, app);
+		const send = fn => (req, res) => {
+			new Promise(resolve => resolve(fn(req, res))).then(val => {
+				if (val) {
+					res.send(val);
+				}
+			});
+		};
 
 		app.set('etag', false);
 
@@ -37,6 +45,10 @@ const createTestServer = opts => createCert(opts && opts.certificate)
 				app.sslUrl = undefined;
 			})
 		]);
+
+		app.get = (path, fn) => {
+			get(path, send(fn));
+		};
 
 		return app.listen().then(() => app);
 	});
