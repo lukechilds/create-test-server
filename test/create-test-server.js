@@ -121,3 +121,15 @@ test('support returning body directly without wrapping in function', async t => 
 	t.deepEqual(bodyJson, { foo: 'bar' });
 	t.deepEqual(bodyAsync, 'bar');
 });
+
+test('accepts multiple callbacks in `.get()`', async t => {
+	const server = await createTestServer();
+
+	server.get('/foo', (req, res, next) => {
+		res.set('foo', 'bar');
+		next();
+	}, (req, res) => res.get('foo'));
+
+	const { body } = await got(server.url + '/foo');
+	t.is(body, 'bar');
+});

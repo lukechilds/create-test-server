@@ -12,8 +12,8 @@ const createTestServer = opts => createCert(opts && opts.certificate)
 		const get = app.get.bind(app);
 		const server = http.createServer(app);
 		const sslServer = https.createServer(keys, app);
-		const send = fn => (req, res) => {
-			const cb = typeof fn === 'function' ? fn(req, res) : fn;
+		const send = fn => (req, res, next) => {
+			const cb = typeof fn === 'function' ? fn(req, res, next) : fn;
 
 			new Promise(resolve => resolve(cb)).then(val => {
 				if (val) {
@@ -48,8 +48,15 @@ const createTestServer = opts => createCert(opts && opts.certificate)
 			})
 		]);
 
-		app.get = (path, fn) => {
-			get(path, send(fn));
+		app.get = function () {
+			// TODO: Use destructuring when targeting Node.js v6
+			const args = Array.from(arguments);
+			const path = args[0];
+			const fns = args.slice(1);
+
+			for (const fn of fns) {
+				get(path, send(fn));
+			}
 		};
 
 		return app.listen().then(() => app);
