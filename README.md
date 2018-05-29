@@ -46,6 +46,13 @@ createTestServer().then(server => {
 });
 ```
 
+The following `Content-Type` headers will be parsed and exposed via `req.body`:
+
+- JSON (`application/json`)
+- Text (`text/plain`)
+- URL-encoded form (`application/x-www-form-urlencoded`)
+- Buffer (`application/octet-stream`)
+
 `createTestServer()` has a Promise based API that pairs well with a modern asynchronous test runner such as [AVA](https://github.com/avajs/ava).
 
 You can create a separate server per test:
