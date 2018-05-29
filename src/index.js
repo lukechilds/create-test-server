@@ -25,6 +25,7 @@ const createTestServer = opts => createCert(opts && opts.certificate)
 
 		app.set('etag', false);
 		app.use(bodyParser.json({ type: 'application/json' }));
+		app.use(bodyParser.text({ type: 'text/plain' }));
 
 		app.caCert = keys.caCert;
 

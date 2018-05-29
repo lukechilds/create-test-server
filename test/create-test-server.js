@@ -93,6 +93,21 @@ test('server automatically parses JSON request body', async t => {
 	});
 });
 
+test('server automatically parses text request body', async t => {
+	const server = await createTestServer();
+	const text = 'foo';
+
+	server.post('/echo', (req, res) => {
+		t.deepEqual(req.body, text);
+		res.end();
+	});
+
+	await got.post(server.url + '/echo', {
+		headers: { 'content-type': 'text/plain' },
+		body: text
+	});
+});
+
 test('opts.certificate is passed through to createCert()', async t => {
 	const server = await createTestServer({ certificate: 'foo.bar' });
 
