@@ -124,6 +124,21 @@ test('server automatically parses URL-encoded form request body', async t => {
 	});
 });
 
+test('server automatically parses binary request body', async t => {
+	const server = await createTestServer();
+	const buffer = Buffer.from('foo');
+
+	server.post('/echo', (req, res) => {
+		t.deepEqual(req.body, buffer);
+		res.end();
+	});
+
+	await got.post(server.url + '/echo', {
+		headers: { 'content-type': 'application/octet-stream' },
+		body: buffer
+	});
+});
+
 test('opts.certificate is passed through to createCert()', async t => {
 	const server = await createTestServer({ certificate: 'foo.bar' });
 
