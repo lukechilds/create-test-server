@@ -1,3 +1,4 @@
+import querystring from 'querystring';
 import test from 'ava';
 import got from 'got';
 import createTestServer from '../';
@@ -105,6 +106,21 @@ test('server automatically parses text request body', async t => {
 	await got.post(server.url + '/echo', {
 		headers: { 'content-type': 'text/plain' },
 		body: text
+	});
+});
+
+test('server automatically parses URL-encoded form request body', async t => {
+	const server = await createTestServer();
+	const object = { foo: 'bar' };
+
+	server.post('/echo', (req, res) => {
+		t.deepEqual(req.body, object);
+		res.end();
+	});
+
+	await got.post(server.url + '/echo', {
+		headers: { 'content-type': 'application/x-www-form-urlencoded' },
+		body: querystring.stringify(object)
 	});
 });
 
