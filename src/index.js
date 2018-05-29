@@ -5,6 +5,7 @@ const https = require('https');
 const express = require('express');
 const pify = require('pify');
 const createCert = require('create-cert');
+const bodyParser = require('body-parser');
 
 const createTestServer = opts => createCert(opts && opts.certificate)
 	.then(keys => {
@@ -23,6 +24,7 @@ const createTestServer = opts => createCert(opts && opts.certificate)
 		};
 
 		app.set('etag', false);
+		app.use(bodyParser.json({ type: 'application/json' }));
 
 		app.caCert = keys.caCert;
 
