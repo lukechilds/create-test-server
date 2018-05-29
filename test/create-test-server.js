@@ -78,6 +78,21 @@ test('server listens for SSL traffic', async t => {
 	t.is(body, 'bar');
 });
 
+test('server automatically parses JSON request body', async t => {
+	const server = await createTestServer();
+	const object = { foo: 'bar' };
+
+	server.post('/echo', (req, res) => {
+		t.deepEqual(req.body, object);
+		res.end();
+	});
+
+	await got.post(server.url + '/echo', {
+		headers: { 'content-type': 'application/json' },
+		body: JSON.stringify(object)
+	});
+});
+
 test('opts.certificate is passed through to createCert()', async t => {
 	const server = await createTestServer({ certificate: 'foo.bar' });
 
