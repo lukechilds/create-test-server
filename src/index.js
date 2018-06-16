@@ -24,11 +24,10 @@ const createTestServer = opts => createCert(opts && opts.certificate)
 		};
 
 		app.set('etag', false);
-		app.use(bodyParser.json({ type: 'application/json' }));
-		app.use(bodyParser.text({ type: 'text/plain' }));
-		app.use(bodyParser.urlencoded({ type: 'application/x-www-form-urlencoded', extended: true }));
-		app.use(bodyParser.raw({ type: 'application/octet-stream' }));
-
+		app.use(bodyParser.json(Object.assign({ type: 'application/json' }, opts && opts.bodyParser)));
+		app.use(bodyParser.text(Object.assign({ type: 'text/plain' }, opts && opts.bodyParser)));
+		app.use(bodyParser.urlencoded(Object.assign({ type: 'application/x-www-form-urlencoded', extended: true }, opts && opts.bodyParser)));
+		app.use(bodyParser.raw(Object.assign({ type: 'application/octet-stream' }, opts && opts.bodyParser)));
 		app.caCert = keys.caCert;
 
 		app.listen = () => Promise.all([

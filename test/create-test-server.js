@@ -153,6 +153,20 @@ test('opts.certificate is passed through to createCert()', async t => {
 	t.is(body, 'bar');
 });
 
+test('opts.bodyParser is passed through to bodyParser', async t => {
+	const server = await createTestServer({ bodyParser: { limit: '200kb' } });
+
+	server.post('/echo', (req, res) => {
+		t.pass(req.body.size > 100 * 1024);
+		res.end();
+	});
+
+	await got.post(server.url + '/echo', {
+		headers: { 'content-type': 'application/octet-stream' },
+		body: Buffer.alloc(101 * 1024)
+	});
+});
+
 test('support returning body directly', async t => {
 	const server = await createTestServer();
 
