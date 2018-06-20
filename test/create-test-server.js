@@ -173,10 +173,10 @@ test('opts.bodyParser is passed through to bodyParser', async t => {
 		body: buf
 	}));
 
-	await got.post(bigServer.url, {
+	await t.notThrows(got.post(bigServer.url, {
 		headers: { 'content-type': 'application/octet-stream' },
 		body: buf
-	});
+	}));
 });
 
 test('support returning body directly', async t => {
