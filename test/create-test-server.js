@@ -158,22 +158,22 @@ test('opts.bodyParser is passed through to bodyParser', async t => {
 	const bigServer = await createTestServer({ bodyParser: { limit: '200kb' } });
 	const buf = Buffer.alloc(150 * 1024);
 
-	smallServer.post('/echo', (req, res) => {
+	smallServer.post('/', (req, res) => {
 		t.fail();
 		res.end();
 	});
 
-	bigServer.post('/echo', (req, res) => {
+	bigServer.post('/', (req, res) => {
 		t.true(req.body.length === buf.length);
 		res.end();
 	});
 
-	await t.throws(got.post(smallServer.url + '/echo', {
+	await t.throws(got.post(smallServer.url, {
 		headers: { 'content-type': 'application/octet-stream' },
 		body: buf
 	}));
 
-	await got.post(bigServer.url + '/echo', {
+	await got.post(bigServer.url, {
 		headers: { 'content-type': 'application/octet-stream' },
 		body: buf
 	});
