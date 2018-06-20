@@ -158,7 +158,7 @@ test('opts.bodyParser is passed through to bodyParser', async t => {
 	const bigServer = await createTestServer({ bodyParser: { limit: '200kb' } });
 
 	smallServer.post('/echo', (req, res) => {
-		t.pass(req.body.size > 100 * 1024);
+		t.fail();
 		res.end();
 	});
 
