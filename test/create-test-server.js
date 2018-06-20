@@ -156,6 +156,7 @@ test('opts.certificate is passed through to createCert()', async t => {
 test('opts.bodyParser is passed through to bodyParser', async t => {
 	const smallServer = await createTestServer({ bodyParser: { limit: '100kb' } });
 	const bigServer = await createTestServer({ bodyParser: { limit: '200kb' } });
+	const buf = Buffer.alloc(150 * 1024);
 
 	smallServer.post('/echo', (req, res) => {
 		t.fail();
@@ -163,11 +164,9 @@ test('opts.bodyParser is passed through to bodyParser', async t => {
 	});
 
 	bigServer.post('/echo', (req, res) => {
-		t.pass(req.body.size > 100 * 1024);
+		t.true(req.body.length === buf.length);
 		res.end();
 	});
-
-	const buf = Buffer.alloc(150 * 1024);
 
 	await t.throws(got.post(smallServer.url + '/echo', {
 		headers: { 'content-type': 'application/octet-stream' },
