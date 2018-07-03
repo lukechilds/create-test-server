@@ -164,6 +164,13 @@ Default: `undefined`
 
 SSL certificate options to be passed to [`createCert()`](https://github.com/lukechilds/create-cert).
 
+##### options.bodyParser
+
+Type: `object`
+Default: `undefined`
+
+Body parser options to be passed to [`body-parser`](https://github.com/expressjs/body-parser) methods.
+
 ### server
 
 Express instance resolved from `createTestServer()`

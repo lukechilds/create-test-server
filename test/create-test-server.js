@@ -153,6 +153,39 @@ test('opts.certificate is passed through to createCert()', async t => {
 	t.is(body, 'bar');
 });
 
+test('opts.bodyParser is passed through to bodyParser', async t => {
+	const smallServer = await createTestServer({ bodyParser: { limit: '100kb' } });
+	const bigServer = await createTestServer({ bodyParser: { limit: '200kb' } });
+	const buf = Buffer.alloc(150 * 1024);
+
+	// Custom error handler so we don't dump the stack trace in the test output
+	smallServer.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
+		res.status(500).end();
+	});
+
+	t.plan(3);
+
+	smallServer.post('/', (req, res) => {
+		t.fail();
+		res.end();
+	});
+
+	bigServer.post('/', (req, res) => {
+		t.true(req.body.length === buf.length);
+		res.end();
+	});
+
+	await t.throws(got.post(smallServer.url, {
+		headers: { 'content-type': 'application/octet-stream' },
+		body: buf
+	}));
+
+	await t.notThrows(got.post(bigServer.url, {
+		headers: { 'content-type': 'application/octet-stream' },
+		body: buf
+	}));
+});
+
 test('support returning body directly', async t => {
 	const server = await createTestServer();
 
