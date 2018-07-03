@@ -158,6 +158,11 @@ test('opts.bodyParser is passed through to bodyParser', async t => {
 	const bigServer = await createTestServer({ bodyParser: { limit: '200kb' } });
 	const buf = Buffer.alloc(150 * 1024);
 
+	// Custom error handler so we don't dump the stack trace in the test output
+	smallServer.use((err, req, res, next) => { // eslint-disable-line no-unused-vars
+		res.status(500).end();
+	});
+
 	t.plan(3);
 
 	smallServer.post('/', (req, res) => {
