@@ -1,6 +1,6 @@
 {
   "name": "create-test-server",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Creates a minimal Express server for testing",
   "main": "src/index.js",
   "scripts": {
