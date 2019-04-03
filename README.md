@@ -225,7 +225,7 @@ e.g: `5487`
 
 Type: `string`
 
-The CA certificate to validate the server certificate against.˜
+The CA certificate to validate the server certificate against.
 
 #### server.http
 
