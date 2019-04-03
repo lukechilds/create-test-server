@@ -7,7 +7,7 @@ const pify = require('pify');
 const createCert = require('create-cert');
 const bodyParser = require('body-parser');
 
-const createTestServer = opts => createCert(opts && opts.certificate)
+const createTestServer = (opts = {}) => createCert(opts.certificate)
 	.then(keys => {
 		const app = express();
 		const get = app.get.bind(app);
@@ -24,10 +24,14 @@ const createTestServer = opts => createCert(opts && opts.certificate)
 		};
 
 		app.set('etag', false);
-		app.use(bodyParser.json(Object.assign({ limit: '1mb', type: 'application/json' }, opts && opts.bodyParser)));
-		app.use(bodyParser.text(Object.assign({ limit: '1mb', type: 'text/plain' }, opts && opts.bodyParser)));
-		app.use(bodyParser.urlencoded(Object.assign({ limit: '1mb', type: 'application/x-www-form-urlencoded', extended: true }, opts && opts.bodyParser)));
-		app.use(bodyParser.raw(Object.assign({ limit: '1mb', type: 'application/octet-stream' }, opts && opts.bodyParser)));
+
+		if (opts.bodyParser !== false) {
+			app.use(bodyParser.json(Object.assign({ limit: '1mb', type: 'application/json' }, opts.bodyParser)));
+			app.use(bodyParser.text(Object.assign({ limit: '1mb', type: 'text/plain' }, opts.bodyParser)));
+			app.use(bodyParser.urlencoded(Object.assign({ limit: '1mb', type: 'application/x-www-form-urlencoded', extended: true }, opts.bodyParser)));
+			app.use(bodyParser.raw(Object.assign({ limit: '1mb', type: 'application/octet-stream' }, opts.bodyParser)));
+		}
+
 		app.caCert = keys.caCert;
 
 		app.listen = () => Promise.all([

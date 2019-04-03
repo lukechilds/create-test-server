@@ -186,6 +186,21 @@ test('opts.bodyParser is passed through to bodyParser', async t => {
 	}));
 });
 
+test('if opts.bodyParser is false body parsing middleware is disabled', async t => {
+	const server = await createTestServer({ bodyParser: false });
+	const text = 'foo';
+
+	server.post('/echo', (req, res) => {
+		t.deepEqual(req.body, undefined);
+		res.end();
+	});
+
+	await got.post(server.url + '/echo', {
+		headers: { 'content-type': 'text/plain' },
+		body: text
+	});
+});
+
 test('support returning body directly', async t => {
 	const server = await createTestServer();
 
