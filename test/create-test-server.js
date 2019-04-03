@@ -242,3 +242,15 @@ test('accepts multiple callbacks in `.get()`', async t => {
 	const { body } = await got(server.url + '/foo');
 	t.is(body, 'bar');
 });
+
+test('raw http and https servers are exposed', async t => {
+	const server = await createTestServer();
+
+	t.true(server.http.listening);
+	t.true(server.https.listening);
+
+	await server.close();
+
+	t.false(server.http.listening);
+	t.false(server.https.listening);
+});
