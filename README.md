@@ -39,7 +39,7 @@ createTestServer().then(server => {
   });
 
   // You can return a body directly too
-  server.get('/bar', () => 'foo');
+  server.get('/foo', () => 'bar');
   server.get('/foo', 'bar');
 
   // server.url + '/foo' and server.sslUrl + '/foo' will respond with 'bar'
