@@ -57,13 +57,10 @@ const createTestServer = (opts = {}) => createCert(opts.certificate)
 		]);
 
 		app.get = function () {
-			// TODO: Use destructuring when targeting Node.js v6
-			const args = Array.from(arguments);
-			const path = args[0];
-			const fns = args.slice(1);
+			const [path, ...handlers] = [...arguments];
 
-			for (const fn of fns) {
-				get(path, send(fn));
+			for (const handler of handlers) {
+				get(path, send(handler));
 			}
 		};
 
