@@ -26,7 +26,7 @@ const createTestServer = (opts = {}) => createCert(opts.certificate)
 		const send = fn => (req, res, next) => {
 			const cb = typeof fn === 'function' ? fn(req, res, next) : fn;
 
-			new Promise(resolve => resolve(cb)).then(val => {
+			Promise.resolve(cb).then(val => {
 				if (val) {
 					res.send(val);
 				}
