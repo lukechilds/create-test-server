@@ -26,24 +26,23 @@ npm install --save-dev create-test-server
 ```js
 const createTestServer = require('create-test-server');
 
-createTestServer().then(server => {
-  console.log(server.url);
-  // http://localhost:5486
-  console.log(server.sslUrl);
-  // https://localhost:5487
+const server = await createTestServer();
+console.log(server.url);
+// http://localhost:5486
+console.log(server.sslUrl);
+// https://localhost:5487
 
-  // This is just an Express route
-  // You could use any Express middleware too
-  server.get('/foo', (req, res) => {
-    res.send('bar');
-  });
-
-  // You can return a body directly too
-  server.get('/foo', () => 'bar');
-  server.get('/foo', 'bar');
-
-  // server.url + '/foo' and server.sslUrl + '/foo' will respond with 'bar'
+// This is just an Express route
+// You could use any Express middleware too
+server.get('/foo', (req, res) => {
+  res.send('bar');
 });
+
+// You can return a body directly too
+server.get('/foo', () => 'bar');
+server.get('/foo', 'bar');
+
+// server.url + '/foo' and server.sslUrl + '/foo' will respond with 'bar'
 ```
 
 The following `Content-Type` headers will be parsed and exposed via `req.body`:
