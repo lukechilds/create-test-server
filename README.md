@@ -53,6 +53,8 @@ The following `Content-Type` headers will be parsed and exposed via `req.body`:
 - URL-encoded form (`application/x-www-form-urlencoded`)
 - Buffer (`application/octet-stream`)
 
+You can change body parsing behaviour with the [`bodyParser`](#optionsbodyparser) option.
+
 `createTestServer()` has a Promise based API that pairs well with a modern asynchronous test runner such as [AVA](https://github.com/avajs/ava).
 
 You can create a separate server per test:
@@ -166,10 +168,12 @@ SSL certificate options to be passed to [`createCert()`](https://github.com/luke
 
 ##### options.bodyParser
 
-Type: `object`
+Type: `object | boolean`<br>
 Default: `undefined`
 
-Body parser options to be passed to [`body-parser`](https://github.com/expressjs/body-parser) methods.
+Body parser options object to be passed to [`body-parser`](https://github.com/expressjs/body-parser) methods.
+
+If set to `false` then all body parsing middleware will be disabled.
 
 ### server
 
