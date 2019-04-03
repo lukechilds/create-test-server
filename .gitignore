@@ -1,7 +1,8 @@
 ## Node
 
-# Don't commit package-lock.json
+# Don't commit lockfiles
 package-lock.json
+yarn.lock
 
 # Logs
 logs
