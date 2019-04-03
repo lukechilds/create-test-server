@@ -227,6 +227,18 @@ Type: `string`
 
 The CA certificate to validate the server certificate against.˜
 
+#### server.http
+
+Type: [`http.server`](https://nodejs.org/api/http.html#http_class_http_server)
+
+The underlying HTTP server instance.
+
+#### server.https
+
+Type: [`https.server`](https://nodejs.org/api/https.html#https_class_https_server)
+
+The underlying HTTPS server instance.
+
 #### server.listen()
 
 Type: `function`

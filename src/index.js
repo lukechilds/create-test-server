@@ -9,18 +9,18 @@ const bodyParser = require('body-parser');
 
 const createTestServer = (opts = {}) => createCert(opts.certificate)
 	.then(keys => {
-		const app = express();
-		const server = http.createServer(app);
-		const sslServer = https.createServer(keys, app);
-		app.caCert = keys.caCert;
+		const server = express();
+		server.http = http.createServer(server);
+		server.https = https.createServer(keys, server);
+		server.caCert = keys.caCert;
 
-		app.set('etag', false);
+		server.set('etag', false);
 
 		if (opts.bodyParser !== false) {
-			app.use(bodyParser.json(Object.assign({ limit: '1mb', type: 'application/json' }, opts.bodyParser)));
-			app.use(bodyParser.text(Object.assign({ limit: '1mb', type: 'text/plain' }, opts.bodyParser)));
-			app.use(bodyParser.urlencoded(Object.assign({ limit: '1mb', type: 'application/x-www-form-urlencoded', extended: true }, opts.bodyParser)));
-			app.use(bodyParser.raw(Object.assign({ limit: '1mb', type: 'application/octet-stream' }, opts.bodyParser)));
+			server.use(bodyParser.json(Object.assign({ limit: '1mb', type: 'application/json' }, opts.bodyParser)));
+			server.use(bodyParser.text(Object.assign({ limit: '1mb', type: 'text/plain' }, opts.bodyParser)));
+			server.use(bodyParser.urlencoded(Object.assign({ limit: '1mb', type: 'application/x-www-form-urlencoded', extended: true }, opts.bodyParser)));
+			server.use(bodyParser.raw(Object.assign({ limit: '1mb', type: 'application/octet-stream' }, opts.bodyParser)));
 		}
 
 		const send = fn => (req, res, next) => {
@@ -33,8 +33,8 @@ const createTestServer = (opts = {}) => createCert(opts.certificate)
 			});
 		};
 
-		const get = app.get.bind(app);
-		app.get = function () {
+		const get = server.get.bind(server);
+		server.get = function () {
 			const [path, ...handlers] = [...arguments];
 
 			for (const handler of handlers) {
@@ -42,29 +42,29 @@ const createTestServer = (opts = {}) => createCert(opts.certificate)
 			}
 		};
 
-		app.listen = () => Promise.all([
-			pify(server.listen.bind(server))().then(() => {
-				app.port = server.address().port;
-				app.url = `http://localhost:${app.port}`;
+		server.listen = () => Promise.all([
+			pify(server.http.listen.bind(server.http))().then(() => {
+				server.port = server.http.address().port;
+				server.url = `http://localhost:${server.port}`;
 			}),
-			pify(sslServer.listen.bind(sslServer))().then(() => {
-				app.sslPort = sslServer.address().port;
-				app.sslUrl = `https://localhost:${app.sslPort}`;
+			pify(server.https.listen.bind(server.https))().then(() => {
+				server.sslPort = server.https.address().port;
+				server.sslUrl = `https://localhost:${server.sslPort}`;
 			})
 		]);
 
-		app.close = () => Promise.all([
-			pify(server.close.bind(server))().then(() => {
-				app.port = undefined;
-				app.url = undefined;
+		server.close = () => Promise.all([
+			pify(server.http.close.bind(server.http))().then(() => {
+				server.port = undefined;
+				server.url = undefined;
 			}),
-			pify(sslServer.close.bind(sslServer))().then(() => {
-				app.sslPort = undefined;
-				app.sslUrl = undefined;
+			pify(server.https.close.bind(server.https))().then(() => {
+				server.sslPort = undefined;
+				server.sslUrl = undefined;
 			})
 		]);
 
-		return app.listen().then(() => app);
+		return server.listen().then(() => server);
 	});
 
 module.exports = createTestServer;
