@@ -65,7 +65,7 @@ import createTestServer from 'create-test-server';
 
 test(async t => {
   const server = await createTestServer();
-  server.get('/foo', (req, res) => res.send('bar'));
+  server.get('/foo', 'bar');
 
   const response = await got(`${server.url}/foo`);
   t.is(response.body, 'bar');
@@ -81,7 +81,7 @@ let server;
 
 test.before(async () => {
   server = await createTestServer();
-  server.get('/foo', (req, res) => res.send('bar'));
+  server.get('/foo', 'bar');
 });
 
 test(async t => {
@@ -104,7 +104,7 @@ You can also make properly authenticated SSL requests by setting a common name f
 ```js
 test(async t => {
   const server = await createTestServer({ certificate: 'foobar.com' });
-  server.get('/foo', (req, res) => res.send('bar'));
+  server.get('/foo', 'bar');
 
   const response = await got(`${server.sslUrl}/foo`, {
     ca: server.caCert,
@@ -121,7 +121,7 @@ You can still make an SSL connection without messing about with certificates if 
 ```js
 test(async t => {
   const server = await createTestServer();
-  server.get('/foo', (req, res) => res.send('bar'));
+  server.get('/foo', 'bar');
 
   const response = await got(`${server.sslUrl}/foo`, {
     rejectUnauthorized: false
