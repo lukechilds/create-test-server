@@ -10,18 +10,9 @@ const bodyParser = require('body-parser');
 const createTestServer = (opts = {}) => createCert(opts.certificate)
 	.then(keys => {
 		const app = express();
-		const get = app.get.bind(app);
 		const server = http.createServer(app);
 		const sslServer = https.createServer(keys, app);
-		const send = fn => (req, res, next) => {
-			const cb = typeof fn === 'function' ? fn(req, res, next) : fn;
-
-			new Promise(resolve => resolve(cb)).then(val => {
-				if (val) {
-					res.send(val);
-				}
-			});
-		};
+		app.caCert = keys.caCert;
 
 		app.set('etag', false);
 
@@ -32,7 +23,24 @@ const createTestServer = (opts = {}) => createCert(opts.certificate)
 			app.use(bodyParser.raw(Object.assign({ limit: '1mb', type: 'application/octet-stream' }, opts.bodyParser)));
 		}
 
-		app.caCert = keys.caCert;
+		const send = fn => (req, res, next) => {
+			const cb = typeof fn === 'function' ? fn(req, res, next) : fn;
+
+			new Promise(resolve => resolve(cb)).then(val => {
+				if (val) {
+					res.send(val);
+				}
+			});
+		};
+
+		const get = app.get.bind(app);
+		app.get = function () {
+			const [path, ...handlers] = [...arguments];
+
+			for (const handler of handlers) {
+				get(path, send(handler));
+			}
+		};
 
 		app.listen = () => Promise.all([
 			pify(server.listen.bind(server))().then(() => {
@@ -55,14 +63,6 @@ const createTestServer = (opts = {}) => createCert(opts.certificate)
 				app.sslUrl = undefined;
 			})
 		]);
-
-		app.get = function () {
-			const [path, ...handlers] = [...arguments];
-
-			for (const handler of handlers) {
-				get(path, send(handler));
-			}
-		};
 
 		return app.listen().then(() => app);
 	});
