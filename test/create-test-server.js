@@ -201,6 +201,16 @@ test('if opts.bodyParser is false body parsing middleware is disabled', async t 
 	});
 });
 
+test('if opts.certificate is false server wont create ssl', async t => {
+	const server = await createTestServer({
+		certificate: false
+	});
+
+	t.true(typeof server.sslPort === 'undefined');
+	t.true(typeof server.sslUrl === 'undefined');
+	t.true(typeof server.caCert === 'undefined');
+});
+
 test('support returning body directly', async t => {
 	const server = await createTestServer();
 
